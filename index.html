@@ -514,19 +514,167 @@
   .reveal.delay-3 { transition-delay: 0.3s; }
   .reveal.delay-4 { transition-delay: 0.4s; }
 
+  /* ====== BURGER (mobile / tablette) ====== */
+  .nav-burger {
+    display: none;
+    width: 42px;
+    height: 42px;
+    border: 1px solid var(--glass-border);
+    border-radius: 100px;
+    background: var(--glass-bg);
+    cursor: pointer;
+    position: relative;
+    padding: 0;
+  }
+  .nav-burger span {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 18px;
+    height: 1.5px;
+    background: var(--ink);
+    transform: translate(-50%, -50%);
+    transition: transform 0.4s ease, opacity 0.3s ease;
+  }
+  .nav-burger span:nth-child(1) { transform: translate(-50%, calc(-50% - 5px)); }
+  .nav-burger span:nth-child(3) { transform: translate(-50%, calc(-50% + 5px)); }
+  .nav-burger.open span:nth-child(1) { transform: translate(-50%, -50%) rotate(45deg); }
+  .nav-burger.open span:nth-child(2) { opacity: 0; }
+  .nav-burger.open span:nth-child(3) { transform: translate(-50%, -50%) rotate(-45deg); }
+
   /* ====== RESPONSIVE ====== */
+
+  /* --- Tablette paysage / petits laptops (≤ 1100px) --- */
+  @media (max-width: 1100px) {
+    nav { padding: 1.2rem 2rem; }
+    .nav-links { gap: 1.8rem; }
+    .hero, section { padding-left: 2rem; padding-right: 2rem; }
+    section { padding-top: 6rem; padding-bottom: 6rem; }
+    .glass-card { padding: 2rem; }
+    .exp-card { grid-template-columns: 160px 1fr; gap: 2rem; }
+    .exp-content { padding: 2rem; }
+    .about-text { font-size: 1.3rem; }
+  }
+
+  /* --- Tablette portrait (≤ 900px) : menu burger ON --- */
   @media (max-width: 900px) {
-    nav { padding: 1.2rem 1.5rem; }
-    .nav-links { gap: 1.2rem; }
-    .nav-links a { font-size: 0.75rem; }
+    nav { padding: 1rem 1.5rem; }
+    .nav-burger { display: block; }
+    .nav-links {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: min(320px, 80vw);
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 1.8rem;
+      padding: 5rem 2.5rem;
+      background: rgba(7, 8, 12, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-left: 1px solid var(--glass-border);
+      transform: translateX(100%);
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .nav-links.open { transform: translateX(0); }
+    .nav-links a { font-size: 1rem; letter-spacing: 0.12em; }
+
     .hero, section { padding-left: 1.5rem; padding-right: 1.5rem; }
     section { padding-top: 5rem; padding-bottom: 5rem; }
-    .about-grid { grid-template-columns: 1fr; }
-    .about-text { font-size: 1.2rem; }
+
+    .section-header {
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-bottom: 3rem;
+      align-items: flex-start;
+    }
+
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .about-text { font-size: 1.15rem; }
+
     .exp-card { grid-template-columns: 1fr; gap: 1rem; }
-    .hero-meta { flex-direction: column; gap: 1.5rem; }
-    .contact-card { padding: 2.5rem 1.5rem; }
-    .section-header { flex-direction: column; gap: 0.5rem; margin-bottom: 3rem; }
+    .exp-period {
+      border-top: none;
+      border-left: 2px solid var(--accent);
+      padding: 0 0 0 1rem;
+      font-size: 0.85rem;
+    }
+    .exp-content { padding: 1.8rem; }
+    .exp-role { font-size: 1.4rem; }
+
+    .skills-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+    .edu-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+
+    .hero-meta { flex-wrap: wrap; gap: 1.5rem; margin-top: 2.5rem; }
+    .hero-meta div { flex: 1 1 140px; }
+
+    .contact-card { padding: 3rem 1.8rem; }
+  }
+
+  /* --- Smartphone (≤ 600px) --- */
+  @media (max-width: 600px) {
+    nav { padding: 0.9rem 1.2rem; }
+    .logo { font-size: 1.2rem; }
+
+    .hero { padding: 0 1.2rem; }
+    section { padding: 4.5rem 1.2rem; }
+
+    .hero h1 { font-size: clamp(2.8rem, 13vw, 4.5rem); }
+    .hero-tag { font-size: 0.7rem; padding: 0.4rem 1rem; margin-bottom: 1.5rem; }
+    .hero-sub { font-size: 1rem; margin-top: 1.5rem; }
+    .hero-meta { flex-direction: column; gap: 1.2rem; margin-top: 2rem; }
+    .hero-meta div { flex: 1 1 auto; }
+    .scroll-cue { font-size: 0.6rem; bottom: 2rem; }
+
+    .glass-card { padding: 1.6rem; border-radius: 18px; }
+    .section-title { font-size: clamp(2rem, 9vw, 2.8rem); }
+
+    .stat-card { padding: 1.6rem; }
+    .stat-card .num { font-size: 2.4rem; }
+
+    .exp-content { padding: 1.5rem; }
+    .exp-role { font-size: 1.25rem; }
+    .exp-list li { font-size: 0.9rem; padding-left: 1.2rem; }
+
+    .skills-grid { grid-template-columns: 1fr; }
+    .skill-card { padding: 1.6rem; }
+    .skill-card h3 { font-size: 1.2rem; }
+    .skill-tags span { font-size: 0.72rem; padding: 0.3rem 0.7rem; }
+
+    .edu-grid { grid-template-columns: 1fr; }
+    .edu-card { padding: 1.7rem; }
+    .edu-card h3 { font-size: 1.2rem; }
+
+    .contact-card { padding: 2.5rem 1.4rem; }
+    .contact-card h2 { font-size: clamp(2rem, 9vw, 2.8rem); margin-bottom: 1.5rem; }
+    .contact-links { flex-direction: column; gap: 0.8rem; }
+    .contact-link {
+      width: 100%;
+      justify-content: center;
+      padding: 0.9rem 1.5rem;
+      font-size: 0.85rem;
+    }
+
+    footer { padding: 2rem 1.2rem; font-size: 0.75rem; }
+  }
+
+  /* --- Très petits écrans (≤ 380px) --- */
+  @media (max-width: 380px) {
+    .hero h1 { font-size: clamp(2.3rem, 12vw, 3.5rem); }
+    .glass-card { padding: 1.3rem; }
+    .skill-tags span { font-size: 0.7rem; }
+  }
+
+  /* --- Préférence "réduire les animations" --- */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    html { scroll-behavior: auto; }
   }
 </style>
 </head>
@@ -543,7 +691,10 @@
 <!-- ===== NAV ===== -->
 <nav>
   <div class="logo">Nikita <span>Chala</span></div>
-  <ul class="nav-links">
+  <button class="nav-burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-links">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links">
     <li><a href="#about">À propos</a></li>
     <li><a href="#experience">Parcours</a></li>
     <li><a href="#skills">Expertises</a></li>
@@ -833,15 +984,39 @@
 
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  // Subtle parallax on hero text on scroll
+  // ===== Menu burger (mobile / tablette) =====
+  const burger = document.querySelector('.nav-burger');
+  const navLinks = document.querySelector('.nav-links');
+  if (burger && navLinks) {
+    const toggleMenu = (force) => {
+      const willOpen = typeof force === 'boolean' ? force : !navLinks.classList.contains('open');
+      navLinks.classList.toggle('open', willOpen);
+      burger.classList.toggle('open', willOpen);
+      burger.setAttribute('aria-expanded', String(willOpen));
+      document.body.style.overflow = willOpen ? 'hidden' : '';
+    };
+    burger.addEventListener('click', () => toggleMenu());
+    // Refermer le menu au clic sur un lien
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleMenu(false)));
+    // Refermer si on repasse en desktop
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 900 && navLinks.classList.contains('open')) toggleMenu(false);
+    });
+  }
+
+  // ===== Parallax hero (désactivé sur mobile pour fluidité) =====
   const heroContent = document.querySelector('.hero-content');
-  window.addEventListener('scroll', () => {
-    const y = window.scrollY;
-    if (y < window.innerHeight && heroContent) {
-      heroContent.style.transform = `translateY(${y * 0.15}px)`;
-      heroContent.style.opacity = Math.max(0, 1 - y / 600);
-    }
-  }, { passive: true });
+  const isMobile = window.matchMedia('(max-width: 900px)');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (heroContent && !reduceMotion && !isMobile.matches) {
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (y < window.innerHeight) {
+        heroContent.style.transform = `translateY(${y * 0.15}px)`;
+        heroContent.style.opacity = Math.max(0, 1 - y / 600);
+      }
+    }, { passive: true });
+  }
 </script>
 
 </body>
