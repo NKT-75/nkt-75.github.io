@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nikita Chala — Marketing Digital & Stratégie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #07080c;
+    --ink: #f5f3ee;
+    --ink-soft: rgba(245, 243, 238, 0.72);
+    --ink-mute: rgba(245, 243, 238, 0.45);
+    --accent: #c8b6e8;
+    --glass-bg: rgba(255, 255, 255, 0.06);
+    --glass-bg-strong: rgba(255, 255, 255, 0.09);
+    --glass-border: rgba(255, 255, 255, 0.14);
+    --glass-border-strong: rgba(255, 255, 255, 0.22);
+    --shadow-soft: 0 30px 60px -20px rgba(0, 0, 0, 0.55);
+    --display: 'Fraunces', 'Times New Roman', serif;
+    --body: 'Inter Tight', system-ui, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--body);
+    background: var(--bg);
+    color: var(--ink);
+    overflow-x: hidden;
+    line-height: 1.6;
+    font-weight: 300;
+    letter-spacing: 0.01em;
+  }
+
+  /* ====== VIDEO BACKGROUND ====== */
+  .video-bg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .video-bg video {
+    position: absolute;
+    top: 50%; left: 50%;
+    min-width: 100%; min-height: 100%;
+    width: auto; height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    filter: brightness(0.42) saturate(1.05);
+  }
+  .video-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 10%, rgba(200, 182, 232, 0.10), transparent 50%),
+      radial-gradient(ellipse at 80% 90%, rgba(160, 140, 220, 0.10), transparent 50%),
+      linear-gradient(180deg, rgba(7,8,12,0.65) 0%, rgba(7,8,12,0.78) 50%, rgba(7,8,12,0.88) 100%);
+    pointer-events: none;
+  }
+  /* Vignette supplémentaire sur les bords pour concentrer le regard */
+  .video-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 30%, rgba(7,8,12,0.55) 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Grain overlay for texture */
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.06;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.6'/></svg>");
+  }
+
+  /* ====== NAVIGATION ====== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(7, 8, 12, 0.3);
+    backdrop-filter: blur(20px) saturate(1.2);
+    -webkit-backdrop-filter: blur(20px) saturate(1.2);
+    border-bottom: 1px solid var(--glass-border);
+  }
+  .logo {
+    font-family: var(--display);
+    font-size: 1.4rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    font-style: italic;
+  }
+  .logo span { color: var(--accent); }
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.6s ease;
+  }
+  .nav-links a:hover { color: var(--ink); }
+
+  /* ====== HERO ====== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 0 3rem;
+    position: relative;
+  }
+  .hero-content { max-width: 1100px; }
+  .hero-tag {
+    display: inline-block;
+    font-size: 0.78rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 2rem;
+    padding: 0.5rem 1.2rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 100px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    opacity: 0;
+    animation: fadeUp 1s ease 0.2s forwards;
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-size: clamp(3.5rem, 9vw, 8rem);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 .line {
+    display: block;
+    overflow: hidden;
+  }
+  .hero h1 .line span {
+    display: inline-block;
+    transform: translateY(110%);
+    animation: slideUp 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .hero h1 .line:nth-child(1) span { animation-delay: 0.4s; }
+  .hero h1 .line:nth-child(2) span { animation-delay: 0.55s; font-style: italic; color: var(--accent); }
+  .hero-sub {
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    max-width: 580px;
+    margin-top: 2rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 1s forwards;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 3rem;
+    margin-top: 3rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.2s forwards;
+  }
+  .hero-meta div {
+    border-left: 1px solid var(--glass-border);
+    padding-left: 1.2rem;
+  }
+  .hero-meta .label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--ink-mute);
+    margin-bottom: 0.4rem;
+  }
+  .hero-meta .value {
+    font-family: var(--display);
+    font-size: 1.05rem;
+    font-weight: 400;
+  }
+
+  /* Scroll indicator */
+  .scroll-cue {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    opacity: 0;
+    animation: fadeUp 1s ease 1.5s forwards;
+  }
+  .scroll-cue::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 40px;
+    background: var(--ink-mute);
+    margin: 1rem auto 0;
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  /* ====== SECTIONS ====== */
+  section {
+    padding: 8rem 3rem;
+    position: relative;
+  }
+  .section-header {
+    max-width: 1300px;
+    margin: 0 auto 5rem;
+    display: flex;
+    align-items: baseline;
+    gap: 2rem;
+  }
+  .section-num {
+    font-family: var(--display);
+    font-size: 0.9rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+  .section-title {
+    font-family: var(--display);
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .section-title em {
+    color: var(--accent);
+    font-weight: 400;
+  }
+
+  /* ====== LIQUID GLASS CARDS ====== */
+  .glass-card {
+    position: relative;
+    background: var(--glass-bg);
+    backdrop-filter: blur(24px) saturate(1.3);
+    -webkit-backdrop-filter: blur(24px) saturate(1.3);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 2.5rem;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+  }
+
+  /* Periodic shimmer animation removed for cleaner reading */
+
+  /* ====== ABOUT ====== */
+  .about-grid {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 3rem;
+  }
+  .about-text {
+    font-family: var(--display);
+    font-size: 1.5rem;
+    font-weight: 300;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+  }
+  .about-text em {
+    color: var(--accent);
+    font-style: italic;
+  }
+  .about-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .stat-card {
+    padding: 2rem;
+  }
+  .stat-card .num {
+    font-family: var(--display);
+    font-size: 3rem;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+  .stat-card .desc {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    margin-top: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  /* ====== EXPERIENCE TIMELINE ====== */
+  .exp-grid {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .exp-card {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  .exp-period {
+    font-family: var(--display);
+    font-size: 0.95rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--glass-border);
+  }
+  .exp-content {
+    padding: 2.5rem;
+  }
+  .exp-role {
+    font-family: var(--display);
+    font-size: 1.7rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  .exp-company {
+    color: var(--accent);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.03em;
+  }
+  .exp-company .sep { opacity: 0.4; margin: 0 0.5rem; }
+  .exp-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+  .exp-list li {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    padding-left: 1.5rem;
+    position: relative;
+    line-height: 1.65;
+  }
+  .exp-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+  .exp-list li strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* ====== SKILLS ====== */
+  .skills-grid {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+  .skill-card { padding: 2rem; }
+  .skill-card .skill-icon {
+    font-family: var(--display);
+    font-size: 1.6rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    font-style: italic;
+  }
+  .skill-card h3 {
+    font-family: var(--display);
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin-bottom: 0.8rem;
+    letter-spacing: -0.01em;
+  }
+  .skill-desc {
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    margin-bottom: 1.3rem;
+  }
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .skill-tags span {
+    font-size: 0.78rem;
+    padding: 0.35rem 0.85rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 100px;
+    background: rgba(255,255,255,0.03);
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+  }
+
+  /* ====== EDUCATION ====== */
+  .edu-grid {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  .edu-card { padding: 2.2rem; }
+  .edu-year {
+    font-family: var(--display);
+    font-size: 0.85rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.8rem;
+  }
+  .edu-card h3 {
+    font-family: var(--display);
+    font-size: 1.35rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  .edu-school {
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+  }
+
+  /* ====== CONTACT ====== */
+  .contact-card {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 4rem;
+    text-align: center;
+  }
+  .contact-card h2 {
+    font-family: var(--display);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 2rem;
+  }
+  .contact-card h2 em {
+    color: var(--accent);
+    font-style: italic;
+  }
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 2.5rem;
+  }
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 2rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 100px;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: color 0.6s ease, background 0.6s ease, border-color 0.6s ease;
+  }
+  .contact-link:hover {
+    background: rgba(200, 182, 232, 0.15);
+    border-color: var(--accent);
+  }
+
+  footer {
+    padding: 3rem;
+    text-align: center;
+    color: var(--ink-mute);
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    border-top: 1px solid var(--glass-border);
+  }
+
+  /* ====== ANIMATIONS ====== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slideUp {
+    from { transform: translateY(110%); }
+    to   { transform: translateY(0); }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { transform: scaleY(0.3); transform-origin: top; opacity: 0.4; }
+    50%      { transform: scaleY(1); opacity: 1; }
+  }
+
+  /* Scroll-revealed elements */
+  .reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal.delay-1 { transition-delay: 0.1s; }
+  .reveal.delay-2 { transition-delay: 0.2s; }
+  .reveal.delay-3 { transition-delay: 0.3s; }
+  .reveal.delay-4 { transition-delay: 0.4s; }
+
+  /* ====== RESPONSIVE ====== */
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { gap: 1.2rem; }
+    .nav-links a { font-size: 0.75rem; }
+    .hero, section { padding-left: 1.5rem; padding-right: 1.5rem; }
+    section { padding-top: 5rem; padding-bottom: 5rem; }
+    .about-grid { grid-template-columns: 1fr; }
+    .about-text { font-size: 1.2rem; }
+    .exp-card { grid-template-columns: 1fr; gap: 1rem; }
+    .hero-meta { flex-direction: column; gap: 1.5rem; }
+    .contact-card { padding: 2.5rem 1.5rem; }
+    .section-header { flex-direction: column; gap: 0.5rem; margin-bottom: 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== VIDEO BACKGROUND ===== -->
+<div class="video-bg">
+  <video autoplay muted loop playsinline preload="auto">
+    <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260319_055001_8e16d972-3b2b-441c-86ad-2901a54682f9.mp4" type="video/mp4">
+  </video>
+</div>
+<div class="grain"></div>
+
+<!-- ===== NAV ===== -->
+<nav>
+  <div class="logo">Nikita <span>Chala</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#experience">Parcours</a></li>
+    <li><a href="#skills">Expertises</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="top">
+  <div class="hero-content">
+    <span class="hero-tag">Marketing Digital · Stratégie · CRM</span>
+    <h1>
+      <span class="line"><span>Nikita Chala.</span></span>
+    </h1>
+    <p class="hero-sub">
+      Futur diplômé d'un Master en Marketing Digital (IIM) et d'un double diplôme Ingénieur-Manager (ESILV). Une formation technique solide, une expertise terrain en CRM, contenu et acquisition — au croisement de la donnée et de la valeur client.
+    </p>
+    <div class="hero-meta">
+      <div>
+        <div class="label">Basée à</div>
+        <div class="value">Paris, Île-de-France</div>
+      </div>
+      <div>
+        <div class="label">Langues</div>
+        <div class="value">Français · Anglais C1</div>
+      </div>
+      <div>
+        <div class="label">Statut</div>
+        <div class="value">En poste — Testoon</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section id="about">
+  <div class="section-header reveal">
+    <span class="section-num">01 —</span>
+    <h2 class="section-title">À <em>propos</em></h2>
+  </div>
+  <div class="about-grid">
+    <p class="about-text reveal">
+      Je combine <em>rigueur d'ingénieur</em> et <em>sens marketing</em> pour piloter des stratégies digitales mesurables. Mes expériences traversent l'industrie de la <em>musique chez Sony Music</em>, l'écosystème <em>Web3 chez Markchain</em>, et le <em>B2B tech</em> chez Testoon — avec une obsession constante : la donnée, la valeur client, et les approches multi-canaux.
+    </p>
+    <div class="about-stats">
+      <div class="glass-card stat-card shimmer reveal delay-1" style="--shimmer-delay: 0s;">
+        <div class="num">3+</div>
+        <div class="desc">Secteurs explorés — musique, Web3, B2B tech</div>
+      </div>
+      <div class="glass-card stat-card shimmer reveal delay-2" style="--shimmer-delay: 2s;">
+        <div class="num">5</div>
+        <div class="desc">Années de formation Ingénieur-Manager (ESILV + IIM)</div>
+      </div>
+      <div class="glass-card stat-card shimmer reveal delay-3" style="--shimmer-delay: 4s;">
+        <div class="num">10+</div>
+        <div class="desc">Outils maîtrisés — HubSpot, Odoo, Google Ads, Meta…</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXPERIENCE ===== -->
+<section id="experience">
+  <div class="section-header reveal">
+    <span class="section-num">02 —</span>
+    <h2 class="section-title"><em>Parcours</em> professionnel</h2>
+  </div>
+  <div class="exp-grid">
+
+    <div class="exp-card reveal">
+      <div class="exp-period">Août 2025<br>— Aujourd'hui</div>
+      <div class="glass-card exp-content">
+        <h3 class="exp-role">Chargé de Développement Commercial & Marketing</h3>
+        <p class="exp-company">Testoon <span class="sep">·</span> Distributeur B2B — Châtillon (92)</p>
+        <ul class="exp-list">
+          <li><strong>Stratégie d'acquisition multi-marchés</strong> sur des verticales ciblées (jumeau numérique BTP, énergies renouvelables, audit énergétique).</li>
+          <li><strong>Marketing automation & CRM</strong> : pilotage des campagnes mailing, scoring de visiteurs, retargeting, prospection multi-canale sur Odoo.</li>
+          <li><strong>Lifecycle marketing</strong> : conception de parcours client de l'acquisition à la fidélisation — landing pages, séquences email, webinaires.</li>
+          <li><strong>Performance & reporting</strong> : suivi des KPIs (taux de conversion, ROI, engagement) et reporting à la direction.</li>
+          <li><strong>Production de contenu</strong> : refonte du site, optimisation SEO, articles de blog, campagnes social media.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-card reveal">
+      <div class="exp-period">Sept. 2023<br>— Sept. 2024</div>
+      <div class="glass-card exp-content">
+        <h3 class="exp-role">Community Manager — Projet Web3</h3>
+        <p class="exp-company">Markchain <span class="sep">·</span> Paris</p>
+        <ul class="exp-list">
+          <li><strong>Stratégie d'engagement communautaire</strong> sur Discord, Telegram et X — segmentation et personnalisation des messages.</li>
+          <li><strong>Brand building</strong> : positionnement et structuration de l'identité de marque sur les écosystèmes crypto, NFT, DeFi.</li>
+          <li><strong>Content marketing</strong> : production de contenus éditoriaux orientés valeur et rétention.</li>
+          <li><strong>Veille & insights</strong> : identification des tendances sectorielles pour nourrir les décisions stratégiques.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-card reveal">
+      <div class="exp-period">Mars 2023<br>— Août 2023</div>
+      <div class="glass-card exp-content">
+        <h3 class="exp-role">Assistant Marketing Digital</h3>
+        <p class="exp-company">Sony Music Entertainment <span class="sep">·</span> Major de la musique — Paris</p>
+        <ul class="exp-list">
+          <li><strong>Stratégie social media</strong> : création et optimisation de contenus multi-plateformes pour maximiser visibilité et engagement.</li>
+          <li><strong>Marketing de contenu</strong> : production éditoriale et vidéo (newsletters, blogs, articles) alignée sur la stratégie de monétisation des artistes.</li>
+          <li><strong>Analyse de performance</strong> sur Google Analytics, reportings réguliers, identification des leviers d'optimisation.</li>
+          <li><strong>SEO & SEM</strong> : optimisation référencement naturel et pilotage des campagnes payantes.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-card reveal">
+      <div class="exp-period">Janv. 2021<br>— Juin 2021</div>
+      <div class="glass-card exp-content">
+        <h3 class="exp-role">Assistant Marketing</h3>
+        <p class="exp-company">Union Street Media</p>
+        <ul class="exp-list">
+          <li><strong>Mise en œuvre de la stratégie marketing & communication</strong> — production multi-supports et animation des communautés en ligne.</li>
+          <li><strong>Veille concurrentielle</strong> et études de marché pour informer les recommandations stratégiques.</li>
+          <li><strong>Suivi de performance</strong> et optimisation des campagnes via l'analyse de KPIs.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== SKILLS ===== -->
+<section id="skills">
+  <div class="section-header reveal">
+    <span class="section-num">03 —</span>
+    <h2 class="section-title"><em>Expertises</em> & outils</h2>
+  </div>
+  <div class="skills-grid">
+
+    <div class="glass-card skill-card shimmer reveal" style="--shimmer-delay: 0s;">
+      <div class="skill-icon">i.</div>
+      <h3>Stratégie & CRM</h3>
+      <p class="skill-desc">Concevoir et piloter des stratégies marketing data-driven, du ciblage à la fidélisation, sur des cycles de vie clients complexes.</p>
+      <div class="skill-tags">
+        <span>Stratégie marketing</span><span>CRM</span><span>Marketing automation</span><span>Lead scoring</span><span>Lifecycle marketing</span><span>Segmentation</span><span>Lead nurturing</span>
+      </div>
+    </div>
+
+    <div class="glass-card skill-card shimmer reveal delay-1" style="--shimmer-delay: 1s;">
+      <div class="skill-icon">ii.</div>
+      <h3>Data & Performance</h3>
+      <p class="skill-desc">Mesurer, analyser, optimiser. Transformer les KPIs en décisions concrètes pour maximiser le ROI des campagnes.</p>
+      <div class="skill-tags">
+        <span>Google Analytics</span><span>Looker Studio</span><span>KPIs</span><span>Reporting</span><span>SEO</span><span>SEM</span><span>A/B testing</span><span>Tracking & UTM</span><span>Attribution</span>
+      </div>
+    </div>
+
+    <div class="glass-card skill-card shimmer reveal delay-2" style="--shimmer-delay: 2s;">
+      <div class="skill-icon">iii.</div>
+      <h3>Acquisition payante</h3>
+      <p class="skill-desc">Pilotage de campagnes payantes multi-plateformes, du brief créa à l'optimisation budgétaire.</p>
+      <div class="skill-tags">
+        <span>Google Ads</span><span>Meta Business</span><span>LinkedIn Ads</span><span>TikTok Ads</span><span>Retargeting</span><span>Lookalike</span><span>Budget management</span>
+      </div>
+    </div>
+
+    <div class="glass-card skill-card shimmer reveal delay-3" style="--shimmer-delay: 3s;">
+      <div class="skill-icon">iv.</div>
+      <h3>IA & productivité</h3>
+      <p class="skill-desc">Intégration de l'IA générative dans les workflows marketing : contenu, automatisation, recherche, idéation.</p>
+      <div class="skill-tags">
+        <span>ChatGPT</span><span>Claude</span><span>Midjourney</span><span>Notion AI</span><span>Prompt engineering</span><span>Automatisation IA</span><span>IA générative</span><span>Veille IA</span>
+      </div>
+    </div>
+
+    <div class="glass-card skill-card shimmer reveal" style="--shimmer-delay: 4s;">
+      <div class="skill-icon">v.</div>
+      <h3>Web design & no-code</h3>
+      <p class="skill-desc">Conception et production de sites, landing pages et interfaces — UX claire, identité forte, déploiement rapide.</p>
+      <div class="skill-tags">
+        <span>Figma</span><span>Webflow</span><span>WordPress</span><span>Landing pages</span><span>UX/UI</span><span>Wireframing</span><span>Prototyping</span><span>HTML / CSS</span>
+      </div>
+    </div>
+
+    <div class="glass-card skill-card shimmer reveal delay-1" style="--shimmer-delay: 5s;">
+      <div class="skill-icon">vi.</div>
+      <h3>Création & contenu</h3>
+      <p class="skill-desc">Production de contenus éditoriaux, visuels et vidéo — du concept à la publication, en cohérence avec la stratégie de marque.</p>
+      <div class="skill-tags">
+        <span>Adobe Suite</span><span>Photoshop</span><span>Illustrator</span><span>Premiere Pro</span><span>Canva</span><span>CapCut</span><span>Direction artistique</span><span>Storytelling</span>
+      </div>
+    </div>
+
+    <div class="glass-card skill-card shimmer reveal delay-2" style="--shimmer-delay: 6s;">
+      <div class="skill-icon">vii.</div>
+      <h3>Communauté & social media</h3>
+      <p class="skill-desc">Animer, fédérer, faire grandir des communautés — du B2B LinkedIn aux écosystèmes Web3 et Discord.</p>
+      <div class="skill-tags">
+        <span>LinkedIn</span><span>Instagram</span><span>TikTok</span><span>X / Twitter</span><span>Discord</span><span>Telegram</span><span>Community building</span><span>Brand voice</span>
+      </div>
+    </div>
+
+    <div class="glass-card skill-card shimmer reveal delay-3" style="--shimmer-delay: 7s;">
+      <div class="skill-icon">viii.</div>
+      <h3>Outils & écosystème</h3>
+      <p class="skill-desc">Plateformes CRM, automation et productivité maîtrisées en environnement professionnel.</p>
+      <div class="skill-tags">
+        <span>HubSpot</span><span>Odoo</span><span>Mailchimp</span><span>Brevo</span><span>Notion</span><span>Airtable</span><span>Zapier</span><span>Google Workspace</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== EDUCATION ===== -->
+<section id="education">
+  <div class="section-header reveal">
+    <span class="section-num">04 —</span>
+    <h2 class="section-title"><em>Formation</em> & certifications</h2>
+  </div>
+  <div class="edu-grid">
+
+    <div class="glass-card edu-card reveal">
+      <div class="edu-year">2024 — 2026</div>
+      <h3>Master Marketing Digital</h3>
+      <p class="edu-school">IIM Digital School — Paris</p>
+    </div>
+
+    <div class="glass-card edu-card reveal delay-1">
+      <div class="edu-year">2021 — 2024</div>
+      <h3>Double Diplôme Ingénieur — Manager</h3>
+      <p class="edu-school">ESILV — École Supérieure d'Ingénieurs Léonard de Vinci · Paris-La Défense</p>
+    </div>
+
+    <div class="glass-card edu-card reveal delay-2">
+      <div class="edu-year">Sept. — Nov. 2022</div>
+      <h3>Programme d'échange — Bachelor</h3>
+      <p class="edu-school">Riga Business School — Lettonie</p>
+    </div>
+
+    <div class="glass-card edu-card reveal delay-3">
+      <div class="edu-year">2026</div>
+      <h3>Google Digital Marketing & Ecommerce</h3>
+      <p class="edu-school">Certification Google</p>
+    </div>
+
+    <div class="glass-card edu-card reveal delay-4">
+      <div class="edu-year">2026</div>
+      <h3>Specialization Graphic Design</h3>
+      <p class="edu-school">California Institute of the Arts</p>
+    </div>
+
+    <div class="glass-card edu-card reveal delay-4">
+      <div class="edu-year">2025</div>
+      <h3>Real-World AI for Everyone</h3>
+      <p class="edu-school">Certification</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact">
+  <div class="glass-card contact-card shimmer reveal" style="--shimmer-delay: 1s;">
+    <h2>Travaillons <em>ensemble</em>.</h2>
+    <p style="color: var(--ink-soft); max-width: 500px; margin: 0 auto;">
+      Une opportunité, un projet, ou simplement envie d'échanger ? Je serais ravi de vous lire.
+    </p>
+    <div class="contact-links">
+      <a href="mailto:nikita.chala@edu.devinci.fr" class="contact-link">✦ nikita.chala@edu.devinci.fr</a>
+      <a href="https://linkedin.com/in/nikitachala" target="_blank" class="contact-link">✦ LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 Nikita Chala — Conçu avec attention.
+</footer>
+
+<script>
+  // Scroll reveal observer
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Subtle parallax on hero text on scroll
+  const heroContent = document.querySelector('.hero-content');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y < window.innerHeight && heroContent) {
+      heroContent.style.transform = `translateY(${y * 0.15}px)`;
+      heroContent.style.opacity = Math.max(0, 1 - y / 600);
+    }
+  }, { passive: true });
+</script>
+
+</body>
+</html>
